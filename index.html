@@ -11,7 +11,7 @@
                 margin: 0;
                 padding: 0;
                 font-family: Arial, Helvetica, sans-serif
-            }        
+            }
             #versions {
               display: none;
             }
@@ -21,12 +21,12 @@
               top: 0px;
               width: 0px;
               height: 0px;
-              overflow: auto;                
+              overflow: auto;
               background-color: #1C6EA4;
               color: white;
               vertical-align: middle;
-              line-height: 25px; 
-            }      
+              line-height: 25px;
+            }
             #appName {
               float: left;
             }
@@ -40,7 +40,7 @@
               width: 0px;
               height: 0px;
               overflow: auto;
-              background-color: #FFFFFF;              
+              background-color: #FFFFFF;
             }
             #map {
               position: absolute;
@@ -48,10 +48,10 @@
               top: 0px;
               width: 0px;
               height: 0px;
-            }  
+            }
             #divMapCoordinates {
-              border-radius: 5px;              
-              padding: 3px;              
+              border-radius: 5px;
+              padding: 3px;
               position: absolute;
               left: 11px;
               bottom: 6px;
@@ -62,13 +62,13 @@
               position: absolute;
               left: 20px;
               top: 95px;
-              z-index: 100; 
+              z-index: 100;
             }
             #divReadout {
               position: absolute;
               left: 20px;
               top: 125px;
-              z-index: 100;              
+              z-index: 100;
             }
             #divBaseMaps {
               border-radius: 5px;
@@ -77,7 +77,7 @@
               top: 8px;
               right: 10px;
               z-index: 99;
-              background-color: #F5F5F5; 
+              background-color: #F5F5F5;
               cursor: pointer;
               color: blue;
               font-weight: bold;
@@ -88,11 +88,11 @@
               top: 0px;
               width: 0px;
               height: 0px;
-              overflow: auto;                
-              background-color: #FFFFE0;  
-            } 
+              overflow: auto;
+              background-color: #FFFFE0;
+            }
             #attTable{
-              text-align: center;              
+              text-align: center;
             }
             #theAttributes {
               text-align: center;
@@ -102,7 +102,7 @@
               overflow: auto;
             }
             .smallReferenceText{
-              font-size: 12px;              
+              font-size: 12px;
             }
             table {
               width: 99%;
@@ -116,18 +116,18 @@
               padding: 10px;
             }
             td.morePadding {
-              padding: 5px;              
+              padding: 5px;
             }
             td.editToolButtons {
               text-align: center;
-              padding: 5px;               
+              padding: 5px;
             }
             input {
               border-radius: 5px;
               width: 75%;
             }
             input.longInput {
-              width: 97%;              
+              width: 97%;
             }
             select {
               border-radius: 5px;
@@ -147,12 +147,12 @@
               width: 14%;
               text-align: center;
               font-size: 8px;
-            }            
+            }
             button.halfButton {
               width: 48%;
             }
         </style>
-        <script src="https://js.arcgis.com/3.25/"></script> 
+        <script src="https://js.arcgis.com/3.25/"></script>
         <script>
           var esri;
           var map;
@@ -167,13 +167,13 @@
           var imagery;
           var activeInventoryLayer;
           var activeLayerOptions = [];
-          var gidIsClicked = false;          
+          var gidIsClicked = false;
           var addNewIsClicked = false;
           var editIsClicked = false;
           var splitIsClicked = false;
           var joinIsClicked = false;
           var measureClicked = false;
-          var userDrawnGeometry;          
+          var userDrawnGeometry;
           var activeGID;
           var attributeDomain = [];
           var ruleList = [];
@@ -183,211 +183,211 @@
           var objectIDArray = [];
           var gidWithMeasuresGeom;
           var mapPoint;
-          
+
           require(
-            ["esri/map","esri/geometry/Extent","esri/toolbars/edit","esri/geometry/geodesicUtils","esri/units","esri/toolbars/draw","esri/dijit/Measurement","esri/SnappingManager","esri/request","esri/layers/FeatureLayer","esri/dijit/FeatureTable","esri/geometry/geometryEngine","esri/SpatialReference","esri/layers/VectorTileLayer","esri/symbols/SimpleLineSymbol","esri/Color","esri/layers/ArcGISTiledMapServiceLayer","dojo/dom","dojo/on","dojo/parser","dojo/domReady!"], 
+            ["esri/map","esri/geometry/Extent","esri/toolbars/edit","esri/geometry/geodesicUtils","esri/units","esri/toolbars/draw","esri/dijit/Measurement","esri/SnappingManager","esri/request","esri/layers/FeatureLayer","esri/dijit/FeatureTable","esri/geometry/geometryEngine","esri/SpatialReference","esri/layers/VectorTileLayer","esri/symbols/SimpleLineSymbol","esri/Color","esri/layers/ArcGISTiledMapServiceLayer","dojo/dom","dojo/on","dojo/parser","dojo/domReady!"],
             function(Map,Extent,Edit,geodesicUtils,Units,Draw,Measurement,SnappingManager,esriRequest,FeatureLayer,FeatureTable,geometryEngine,SpatialReference,VectorTileLayer,SimpleLineSymbol,Color,ArcGISTiledMapServiceLayer,dom,on,parser) {
               adjustApp();
-              
+
               map = new Map("map", {
-                basemap: "topo",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
-                center: [-98.73,31.29], //was longitude, latitude -98.73,31.29 
-                zoom: 5, //was 14,5
+                // basemap: "topo",  //For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
+                center: [-98.73,31.29], //was longitude, latitude -98.73,31.29
+                zoom: 7, //was 14,5
                 logo: false
               });
-              
-            //   //TxDOT Vector Tile Basemap
-          		// TxDOTVectorTileLayer = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer"); 
-          		// map.addLayer(TxDOTVectorTileLayer); 
-          		
-          		//ESRI Imagery - Change to Google Imagery 
+
+              //TxDOT Vector Tile Basemap
+          		TxDOTVectorTileLayer = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer");
+          		map.addLayer(TxDOTVectorTileLayer);
+
+          		//ESRI Imagery - Change to Google Imagery
           		imagery = new ArcGISTiledMapServiceLayer("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
-              map.addLayer(imagery);   
+              map.addLayer(imagery);
               imagery.hide();
-              
+
               //TxDOT Roadways
               roadwaysLayer = new esri.layers.FeatureLayer("https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Demo_TxDOT_Roadways/FeatureServer/0", {id:"TxDOT Roadways",visible:true,outFields:["*"]});
-              map.addLayer(roadwaysLayer); 
+              map.addLayer(roadwaysLayer);
               roadwaysLayer.hide();
-              
+
               //Map events
          		  map.on("click", getGID);
          		  map.on("click", identRouteForM);
          		  map.on("load", createDrawToolbar);
-         		  map.on("load", createEditToolbar);         		  
-              map.on("load", populateAssetList);          		  
+         		  map.on("load", createEditToolbar);
+              map.on("load", populateAssetList);
           		map.on("mouse-move", showCoordinates);
 
               //Attaching button click events
-              on(dom.byId("btnGetGID"), "click", toggleGetRouteByMap); 
-              on(dom.byId("btnGetInventoryData"), "click", getInventoryData);      
+              on(dom.byId("btnGetGID"), "click", toggleGetRouteByMap);
+              on(dom.byId("btnGetInventoryData"), "click", getInventoryData);
               on(dom.byId("divBaseMaps"), "click", toggleBaseMap);
               on(dom.byId("btnSplitRecord"), "click", toggleSplitFeature);
               on(dom.byId("btnAddRecord"), "click", toggleDrawFeature);
-              on(dom.byId("btnEditRecord"), "click", toggleEditFeature);               
-              on(dom.byId("btnJoinRecord"), "click", toggleJoinFeature); 
-              on(dom.byId("btnCopyRoadbedGeom"), "click", copyRoadbedGeom); 
+              on(dom.byId("btnEditRecord"), "click", toggleEditFeature);
+              on(dom.byId("btnJoinRecord"), "click", toggleJoinFeature);
+              on(dom.byId("btnCopyRoadbedGeom"), "click", copyRoadbedGeom);
               on(dom.byId("btnDeleteRecord"), "click", deleteRecord);
-              on(dom.byId("btnUpdateRecord"), "click", updateRecord); 
+              on(dom.byId("btnUpdateRecord"), "click", updateRecord);
               on(dom.byId("btnStartOver"), "click", startEditingOver);
-              on(dom.byId("btnHome"), "click", zoomToState);     
-              on(dom.byId("btnMeasureReadout"), "click", toggleGetPointMeasure);  
+              on(dom.byId("btnHome"), "click", zoomToState);
+              on(dom.byId("btnMeasureReadout"), "click", toggleGetPointMeasure);
               on(dom.byId("selDomainValues"), "change", populateFromDomain);
-              on(dom.byId("selRoadwayAttributes"), "change", assignActiveLayerOptions);              
-              
+              on(dom.byId("selRoadwayAttributes"), "change", assignActiveLayerOptions);
+
               //-----Adjusts the header, index, and contents-----//
               function adjustApp() {
                 var w = window.innerWidth;
                 var h = window.innerHeight;
-                
+
                 var indexWidthPCT = .18;
                 var mapHeightPCT = .70;
                 var tableHeightPCT = .3;
-                
+
                 //----Header Variables
                 var headerStyleTop = 0;
                 var headerStyleLeft = 0;
                 var headerWidth = w;
                 var headerHeight = 25;
-    
+
                 document.getElementById("header").style.top = headerStyleTop + "px";
                 document.getElementById("header").style.left = headerStyleLeft + "px";
                 document.getElementById("header").style.width = headerWidth + "px";
                 document.getElementById("header").style.height = headerHeight + "px";
                 //----End Header
-                
+
                 //----Index Variables
                 var indexStyleTop = headerHeight;
                 var indexStyleLeft = 0;
                 var indexWidth = Math.round(w*indexWidthPCT);
                 var indexHeight = (h - headerHeight);
-                
+
                 document.getElementById("index").style.top = indexStyleTop + "px";
                 document.getElementById("index").style.left = indexStyleLeft  + "px";
                 document.getElementById("index").style.width = indexWidth + "px";
                 document.getElementById("index").style.height = indexHeight + "px";
                 //----End Index
-                
+
                 //----Map Variables
                 var mapStyleTop = headerHeight;
                 var mapStyleLeft = indexWidth;
                 var mapWidth = Math.round(w-indexWidth);
                 var mapHeight = ((h-headerHeight) * mapHeightPCT);
-                
+
                 document.getElementById("map").style.top = mapStyleTop + "px";
                 document.getElementById("map").style.left = mapStyleLeft  + "px";
                 document.getElementById("map").style.width = mapWidth + "px";
                 document.getElementById("map").style.height = mapHeight + "px";
-                //----End Map              
-                
+                //----End Map
+
                 //----Table Variables
                 var tableStyleTop = headerHeight + mapHeight;
                 var tableStyleLeft = indexWidth;
                 var tableWidth = Math.round(w-indexWidth);
                 var tableHeight = ((h-headerHeight) * tableHeightPCT);
-                
+
                 document.getElementById("table").style.top = tableStyleTop + "px";
                 document.getElementById("table").style.left = tableStyleLeft  + "px";
                 document.getElementById("table").style.width = tableWidth + "px";
                 document.getElementById("table").style.height = tableHeight + "px";
-                //----End Table 
+                //----End Table
               }
               //-----End header, index, and contents-----//
-              
+
            	  //-----Drawing Functions-----//
-              var snapManager = map.enableSnapping({  
-                tolerance: 50,  
+              var snapManager = map.enableSnapping({
+                tolerance: 50,
                 alwaysSnap: true
-              });  
-              
+              });
+
               function createDrawToolbar() {
                 drawToolbar = new Draw(map);
                 drawToolbar.on("draw-end", addDrawingToMap);
               }
-              
+
               function createEditToolbar() {
                 editToolbar = new Edit(map);
 
                 //Activate the toolbar when you click on a graphic
                 map.graphics.on("click", function(evt) {
                   startEditing(evt.graphic);
-                });                
-              }         
-              
+                });
+              }
+
               function startEditing(graphic) {
                 if (editIsClicked) {
-                  editToolbar.activate(Edit.EDIT_VERTICES , graphic);                   
+                  editToolbar.activate(Edit.EDIT_VERTICES , graphic);
                 }
               }
-              
+
               function addDrawingToMap(evt) {
                 drawToolbar.deactivate();
-                var symbol = new esri.symbol.SimpleLineSymbol("solid", new esri.Color("#00FFFF"), 4);                
+                var symbol = new esri.symbol.SimpleLineSymbol("solid", new esri.Color("#00FFFF"), 4);
                 userDrawnGeometry = new esri.geometry.Polyline(new esri.SpatialReference({wkid:102100}));
                 userDrawnGeometry.addPath(evt.geometry.paths[0]);
-                map.graphics.add(new esri.Graphic(userDrawnGeometry, symbol));  
-              }       
-              
+                map.graphics.add(new esri.Graphic(userDrawnGeometry, symbol));
+              }
+
               //---Used for snapping assets to base linework
               function showActiveGID() {
                 	roadwaysLayer.setDefinitionExpression("GID=" + document.getElementById("theGID").value);
                 	roadwaysLayer.show();
               }
-              //-----End Drawing-----//              
-              
+              //-----End Drawing-----//
+
           	  //-----Interactive Controls-----//
               function clearGraphics() {
                 map.graphics.clear();
-              }     
-              
+              }
+
           	  function clearAfterAddNew() {
                 getInventoryData();
                 clearEditingFields();
                 turnOffDrawFeature();
                 turnOffEditFeature();
-                clearGraphics();           	    
-          	  }          
-              
+                clearGraphics();
+          	  }
+
             	function startOver() {
             	  clearGraphics();
             	  turnOffGetRouteByMap();
             	  turnOffDrawFeature();
-                turnOffEditFeature();            	  
+                turnOffEditFeature();
             	  turnOffSplitFeature();
             	  turnOffJoinFeature();
             	  turnOffGetPointMeasure();
             	  disableRecordEditingTools();
             	  hideInventoryLayers();
             	  controlTable();
-            	}  
-            	
+            	}
+
             	function startEditingOver() {
-            	  clearGraphics();  
+            	  clearGraphics();
            	    turnOffDrawFeature();
-                turnOffEditFeature();            	  
+                turnOffEditFeature();
             	  turnOffSplitFeature();
-            	  turnOffJoinFeature(); 
+            	  turnOffJoinFeature();
             	  clearEditingFields();
             	  myTable.clearSelection();
             	}
-            	
+
             	function hideInventoryLayers() {
             	  if (activeInventoryLayer) {
               	  activeInventoryLayer.hide();
-              	  activeInventoryLayer.setDefinitionExpression("OBJECTID>0");             	    
+              	  activeInventoryLayer.setDefinitionExpression("OBJECTID>0");
             	  }
-            	}              	
-          	
-              //--- Get Route Events  	
+            	}
+
+              //--- Get Route Events
            	  function turnOffGetRouteByMap() {
             	    var btnBackground = document.getElementById("btnGetGID");
             	    btnBackground.style.background = "#FFFFFF";
-            	    gidIsClicked = false;          	  
+            	    gidIsClicked = false;
             	}
-            	
+
             	function toggleGetRouteByMap() {
             	  var btnBackground = document.getElementById("btnGetGID");
-            	  
+
             	  if (gidIsClicked) {
             	    btnBackground.style.background = "#FFFFFF";
             	    gidIsClicked = false;
@@ -398,149 +398,149 @@
             	    hideInventoryLayers();
             	    disableRecordEditingTools();
             	  }
-            	}   
-            	
+            	}
+
             	//--- Point Measure Events
             	function turnOffGetPointMeasure() {
             	    var btnBackground = document.getElementById("btnMeasureReadout");
             	    btnBackground.style.background = "#FFFFFF";
-            	    measureClicked = false; 
+            	    measureClicked = false;
             	   // clearGraphics();
             	}
-            	
+
             	function toggleGetPointMeasure() {
             	  var btnBackground = document.getElementById("btnMeasureReadout");
-            	  
+
             	  if (measureClicked) {
             	    btnBackground.style.background = "#FFFFFF";
             	    measureClicked = false;
-            	    clearGraphics();                 
+            	    clearGraphics();
             	  }
             	  else {
             	    btnBackground.style.background = "#FF0000";
             	    measureClicked = true;
-            	  }            	  
+            	  }
             	}
-            	
+
             	//---Add Record Events
             	function turnOffDrawFeature() {
             	    var btnBackground = document.getElementById("btnAddRecord");
             	    btnBackground.style.background = "#FFFFFF";
-            	    addNewIsClicked = false; 
+            	    addNewIsClicked = false;
             	    userDrawnGeometry="";
             	   // clearGraphics();
             	    drawToolbar.deactivate();
             	    roadwaysLayer.hide();
             	}
-            	
+
             	function toggleDrawFeature() {
             	  var btnBackground = document.getElementById("btnAddRecord");
             	  turnOffEditFeature();
             	  turnOffGetPointMeasure();
             	  turnOffJoinFeature();
             	  turnOffSplitFeature();
-            	  
+
             	  if (addNewIsClicked) {
             	    btnBackground.style.background = "#FFFFFF";
             	    addNewIsClicked = false;
             	    userDrawnGeometry="";
             	    clearGraphics();
                   drawToolbar.deactivate();
-            	    roadwaysLayer.hide();                  
+            	    roadwaysLayer.hide();
             	  }
             	  else {
             	    btnBackground.style.background = "#FF0000";
             	    addNewIsClicked = true;
             	    showActiveGID();
                   drawToolbar.activate(Draw[tool]);
-            	  }            	  
-            	}   
-            	
+            	  }
+            	}
+
               //-----Good Edit Toolbar Example-----//
               // https://developers.arcgis.com/javascript/3/jssamples/toolbar_edit.html
-              // https://developers.arcgis.com/javascript/3/jsapi/edit-amd.html              
-              //-----Good Edit Toolbar Example-----//            	
-            	
+              // https://developers.arcgis.com/javascript/3/jsapi/edit-amd.html
+              //-----Good Edit Toolbar Example-----//
+
             	//---Edit Record Events
             	function turnOffEditFeature() {
             	    var btnBackground = document.getElementById("btnEditRecord");
             	    btnBackground.style.background = "#FFFFFF";
-            	    editIsClicked = false; 
+            	    editIsClicked = false;
             	    userDrawnGeometry="";
             	   // clearGraphics();
             	    editToolbar.deactivate();
             	    roadwaysLayer.hide();
             	}
-            	
+
             	function toggleEditFeature() {
             	  var btnBackground = document.getElementById("btnEditRecord");
             	  turnOffDrawFeature();
             	  turnOffGetPointMeasure();
             	  turnOffJoinFeature();
-            	  turnOffSplitFeature();            	  
-            	  
+            	  turnOffSplitFeature();
+
             	  if (editIsClicked) {
             	    btnBackground.style.background = "#FFFFFF";
             	    editIsClicked = false;
             	    userDrawnGeometry="";
             	    clearGraphics();
                   editToolbar.deactivate();
-            	    roadwaysLayer.hide();                  
+            	    roadwaysLayer.hide();
             	  }
             	  else {
             	    btnBackground.style.background = "#FF0000";
             	    editIsClicked = true;
             	    showActiveGID();
-            	  }            	  
-            	}            	
-            	
+            	  }
+            	}
+
             	//--- Split Events
             	function turnOffSplitFeature() {
             	    var btnBackground = document.getElementById("btnSplitRecord");
             	    btnBackground.style.background = "#FFFFFF";
-            	    splitIsClicked = false; 
+            	    splitIsClicked = false;
             	    userDrawnGeometry="";
-            	   // clearGraphics();   
-                  drawToolbar.deactivate();            	    
+            	   // clearGraphics();
+                  drawToolbar.deactivate();
             	}
-            	
+
             	function toggleSplitFeature() {
             	  var btnBackground = document.getElementById("btnSplitRecord");
             	  turnOffEditFeature();
             	  turnOffGetPointMeasure();
             	  turnOffJoinFeature();
             	  turnOffDrawFeature();
-            	  
+
             	  if (splitIsClicked) {
             	    btnBackground.style.background = "#FFFFFF";
             	    splitIsClicked = false;
             	    userDrawnGeometry="";
             	    clearGraphics();
-                  drawToolbar.deactivate();            	    
+                  drawToolbar.deactivate();
             	  }
             	  else {
             	    btnBackground.style.background = "#FF0000";
             	    splitIsClicked = true;
-                  drawToolbar.activate(Draw[tool]);            	    
-            	  }            	  
-            	}    
-            	
+                  drawToolbar.activate(Draw[tool]);
+            	  }
+            	}
+
             	//--- Join Events
             	function turnOffJoinFeature() {
             	    var btnBackground = document.getElementById("btnJoinRecord");
             	    btnBackground.style.background = "#FFFFFF";
-            	    joinIsClicked = false; 
+            	    joinIsClicked = false;
             	   // objectIDArray.length = 0;
-            	   // clearGraphics();            	    
+            	   // clearGraphics();
             	}
-            	
+
             	function toggleJoinFeature() {
             	  var btnBackground = document.getElementById("btnJoinRecord");
             	  turnOffEditFeature();
             	  turnOffGetPointMeasure();
             	  turnOffDrawFeature();
-            	  turnOffSplitFeature();            	  
-            	  
+            	  turnOffSplitFeature();
+
             	  if (joinIsClicked) {
             	    btnBackground.style.background = "#FFFFFF";
             	    joinIsClicked = false;
@@ -550,9 +550,9 @@
             	    btnBackground.style.background = "#FF0000";
             	    joinIsClicked = true;
             	    objectIDArray.length = 0;
-            	  }            	  
-            	}          
-            	
+            	  }
+            	}
+
             	function toggleBaseMap() {
             	  if (baseMap=="TxDOT") {
             	    baseMap="Imagery";
@@ -566,60 +566,60 @@
             	    imagery.hide();
             	    TxDOTVectorTileLayer.show();
             	  }
-            	}    
-            	
+            	}
+
               function showCoordinates(evt) {
             	  var mp = new esri.geometry.webMercatorToGeographic(evt.mapPoint);
             	  document.getElementById("divMapCoordinates").innerHTML = "Level: " + map.getZoom() + ", " + mp.y.toFixed(6) + ", " + mp.x.toFixed(6);
-            	 // document.getElementById("divMapCoordinates").innerHTML = "Level: " + map.getZoom() + ", " + evt.mapPoint.x + ", " + evt.mapPoint.y;            	  
-            	}	     
-            	
+            	 // document.getElementById("divMapCoordinates").innerHTML = "Level: " + map.getZoom() + ", " + evt.mapPoint.x + ", " + evt.mapPoint.y;
+            	}
+
             	function zoomToCoordinate(theX,theY,theZ) {
             	  var thePt = new esri.geometry.Point(theX,theY, new esri.SpatialReference({ wkid: 4269 }));
             	  map.centerAndZoom(esri.geometry.geographicToWebMercator(thePt),theZ);
-            	} 
-            	
+            	}
+
             	function zoomToState() {
             	  var thePt = new esri.geometry.Point(-98.73,31.29, new esri.SpatialReference({ wkid: 4269 }));
-            	  map.centerAndZoom(esri.geometry.geographicToWebMercator(thePt),5);            	  
+            	  map.centerAndZoom(esri.geometry.geographicToWebMercator(thePt),5);
             	}
-              
+
               function setMapExtent(theExtent) {
                 map.setExtent(theExtent);
-              }  
-              
+              }
+
               function zoomRow() {
                 queryTask = new esri.tasks.QueryTask(activeLayerOptions[2]);
                 query = new esri.tasks.Query();
                 query.returnGeometry = true;
                 query.outFields = ["*"];
-                query.where = "OBJECTID IN (" + objectIDArray.toString() + ")";                
+                query.where = "OBJECTID IN (" + objectIDArray.toString() + ")";
                 queryTask.execute(query, zoomResults);
               }
-              
+
               function zoomResults(results) {
                 // var recExtent = results.features[0].geometry.getExtent().expand(2.0);
                 // map.setExtent(recExtent);
 
             	  var symbol = new esri.symbol.SimpleLineSymbol("solid", new esri.Color("#00FFFF"), 4);
-            	  
+
             	  //Joining Extents
-                map.graphics.clear(); 
+                map.graphics.clear();
                 var newExtent;
-                newExtent = new Extent(results.features[0].geometry.getExtent()); 
-                for (var i = 0; i < results.features.length; i++) { 
-                    var graphic = results.features[i]; 
-                    var thisExtent = graphic.geometry.getExtent(); 
-                    
-                    // making a union of extent or previous feature and current feature. 
-                    newExtent = newExtent.union(thisExtent); 
-                    graphic.setSymbol(symbol); 
-                    map.graphics.add(graphic); 
-                } 
+                newExtent = new Extent(results.features[0].geometry.getExtent());
+                for (var i = 0; i < results.features.length; i++) {
+                    var graphic = results.features[i];
+                    var thisExtent = graphic.geometry.getExtent();
+
+                    // making a union of extent or previous feature and current feature.
+                    newExtent = newExtent.union(thisExtent);
+                    graphic.setSymbol(symbol);
+                    map.graphics.add(graphic);
+                }
                 map.setExtent(newExtent.expand(2));
                 selectedRecord = results.features[0];
               }
-            	
+
               function disableRecordEditingTools() {
                 document.getElementById("btnUpdateRecord").disabled=true;
                 document.getElementById("txtEditAttribute").disabled=true;
@@ -627,26 +627,26 @@
                 document.getElementById("btnCopyRoadbedGeom").disabled=true;
                 document.getElementById("btnDeleteRecord").disabled=true;
                 document.getElementById("btnJoinRecord").disabled=true;
-                document.getElementById("btnSplitRecord").disabled=true;              
-                document.getElementById("btnEditRecord").disabled=true;  
-                document.getElementById("btnStartOver").disabled=true; 
-                document.getElementById("txtEditAttribute").value = "";  
+                document.getElementById("btnSplitRecord").disabled=true;
+                document.getElementById("btnEditRecord").disabled=true;
+                document.getElementById("btnStartOver").disabled=true;
+                document.getElementById("txtEditAttribute").value = "";
               // 	document.getElementById("txtEditObjectID").value = "";
-              }   
-              
+              }
+
               function enableRecordEditingTools() {
                 document.getElementById("btnUpdateRecord").disabled=false;
                 document.getElementById("txtEditAttribute").disabled=false;
                 document.getElementById("btnAddRecord").disabled=false;
-                document.getElementById("btnCopyRoadbedGeom").disabled=false;              
+                document.getElementById("btnCopyRoadbedGeom").disabled=false;
                 document.getElementById("btnDeleteRecord").disabled=false;
                 document.getElementById("btnJoinRecord").disabled=false;
-                document.getElementById("btnSplitRecord").disabled=false;              
-                document.getElementById("btnEditRecord").disabled=false;      
+                document.getElementById("btnSplitRecord").disabled=false;
+                document.getElementById("btnEditRecord").disabled=false;
                 document.getElementById("btnStartOver").disabled=false;
-              }     
+              }
               //-----End Interactive Controls-----//
-              
+
               //-----Getting the Route Reference-----//
               function getGID(event) {
                 if (gidIsClicked) {
@@ -655,7 +655,7 @@
                   query.returnGeometry = true;
                   query.outFields = ["*"];
                   query.geometry = event.mapPoint;
-    
+
                   var point = event.mapPoint;
                   var pxWidth = map.extent.getWidth() / map.width;
                   var padding = 3 * pxWidth;
@@ -665,21 +665,21 @@
                     "xmax": point.x + padding,
                     "ymax": point.y + padding,
                     "spatialReference": point.spatialReference
-                  });    
-                  
+                  });
+
                   query.geometry = newGeom;
                   queryTask.execute(query, getResults);
                 }
               }
-              
+
               function getResults(results) {
                 clearGraphics();
-                
+
                 if (results.features.length==0) {
                   alert("Please click closer to a line.");
                   return;
-                }                
-                
+                }
+
                 // document.getElementById("theGID").value = results.features[0].attributes.RTE_RB_NM;
                 document.getElementById("theGID").value = results.features[0].attributes.GID;
                 document.getElementById("divRouteName").innerHTML = results.features[0].attributes.RTE_RB_NM;
@@ -689,15 +689,15 @@
                 var graphic = results.features[0];
                 graphic.setSymbol(symbol);
                 activeGID=graphic;
-                
+
                 var recExtent = results.features[0].geometry.getExtent().expand(2.0);
                 map.setExtent(recExtent);
-                
+
                 map.graphics.add(graphic);
                 controlTable();
               }
-              //-----End Route Reference-----// 
-            	
+              //-----End Route Reference-----//
+
             	//-----Field Validations-----//
             	function checkRouteFields() {
             	  if (document.getElementById("theGID").value && document.getElementById("selRoadwayAttributes").value) {
@@ -706,21 +706,21 @@
             	  else {
             	    return false;
             	  }
-            	}      
-            	
+            	}
+
               function clearEditingFields() {
                 // document.getElementById("txtEditObjectID").value="";
               	document.getElementById("txtEditAttribute").value="";
               }
-              
+
            	  function checkEditingFields() {
            	    // objectIDArray.length
             	  if (objectIDArray.length>0 && document.getElementById("txtEditAttribute").value) {
             	 // if (document.getElementById("txtEditObjectID").value && document.getElementById("txtEditAttribute").value) {
             	    //check against domain values
             	    if (attributeDomain.includes(document.getElementById("txtEditAttribute").value)) {
-            	      return true;          	      
-            	    } 
+            	      return true;
+            	    }
             	    else {
             	      return false;
             	    }
@@ -728,50 +728,50 @@
             	  else {
             	    return false;
             	  }
-            	} 
-            	
+            	}
+
             	function checkInventoryAttribute() {
             	  if (document.getElementById("txtEditAttribute").value) {
             	    //check against domain values
             	    if (attributeDomain.includes(document.getElementById("txtEditAttribute").value)) {
-            	      return true;          	      
-            	    } 
+            	      return true;
+            	    }
             	    else {
             	      return false;
             	    }
             	  }
             	}
-            	//-----End Field Validations-----//          
-            	
+            	//-----End Field Validations-----//
+
               //-----Begin Asset List-----//
             	function populateAssetList() {
                 var assetQueryTask = new esri.tasks.QueryTask("https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Asset/FeatureServer/0");
                 var assetQuery = new esri.tasks.Query();
                 assetQuery.returnGeometry = false;
                 assetQuery.outFields = ["*"];
-                assetQuery.where = "FID>0";                
-                assetQueryTask.execute(assetQuery, populateAssetResults);                
+                assetQuery.where = "FID>0";
+                assetQueryTask.execute(assetQuery, populateAssetResults);
             	}
-            	
+
             	function populateAssetResults(response) {
                 var x = document.getElementById("selRoadwayAttributes");
-                x.options.length = 0; 
+                x.options.length = 0;
             	  assetList.length = 0;
-            	  
+
             	  for (var i = 0; i < response.features.length; i++) {
             	    var assetAttributes = response.features[i].attributes;
             	    assetList.push([assetAttributes.ATTRIBUTE_NAME,assetAttributes.EDITABLE_FIELD,assetAttributes.SERVICE_URL]);
             	  }
-            	  
+
             	  for (var i = 0; i < assetList.length; i++) {
                   var option = document.createElement("option");
                   option.text = assetList[i][0];
                   option.value = assetList[i][0];
-                  x.add(option);            	    
-            	  }          	  
-            	}          
-              //-----End Asset List-----//            	
-            	
+                  x.add(option);
+            	  }
+            	}
+              //-----End Asset List-----//
+
               //-----Begin Domain List-----//
             	function populateDomain(attributeForDomain) {
                 var domainQueryTask = new esri.tasks.QueryTask("https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Domain/FeatureServer/0");
@@ -779,31 +779,31 @@
                 domainQuery.returnGeometry = false;
                 domainQuery.outFields = ["*"];
                 domainQuery.where = "ATTRIBUTE_NAME='" + attributeForDomain + "'";
-                domainQueryTask.execute(domainQuery, populateDomainResults);                
+                domainQueryTask.execute(domainQuery, populateDomainResults);
             	}
-            	
+
             	function populateDomainResults(response) {
                 var x = document.getElementById("selDomainValues");
-                x.options.length = 0; 
+                x.options.length = 0;
             	  attributeDomain.length = 0;
-            	  
+
             	  for (var i = 0; i < response.features.length; i++) {
             	    var domainAttributes = response.features[i].attributes;
             	    attributeDomain.push(domainAttributes.VALUE);
             	  }
-            	  
+
             	  for (var i = 0; i < attributeDomain.length; i++) {
                   var option = document.createElement("option");
                   option.text = attributeDomain[i];
-                  x.add(option);            	    
-            	  }          	  
-            	}          
-            	
+                  x.add(option);
+            	  }
+            	}
+
             	function populateFromDomain() {
             	  document.getElementById("txtEditAttribute").value = document.getElementById("selDomainValues").value;
             	}
-              //-----End Domain List-----//  
-              
+              //-----End Domain List-----//
+
               //-----Begin Business Rules-----//
             	function populateBusinessRules(attributeForRule) {
                 var businessRuleQueryTask = new esri.tasks.QueryTask("https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/BusinessRule/FeatureServer/0");
@@ -811,30 +811,30 @@
                 businessRuleQuery.returnGeometry = false;
                 businessRuleQuery.outFields = ["*"];
                 businessRuleQuery.where = "ATTRIBUTE_NAME='" + attributeForRule + "'";
-                businessRuleQueryTask.execute(businessRuleQuery, populateBusinessRulesResults);                
+                businessRuleQueryTask.execute(businessRuleQuery, populateBusinessRulesResults);
             	}
-            	
+
             	function populateBusinessRulesResults(response) {
             	  ruleList.length = 0;
-            	  
+
             	  for (var i = 0; i < response.features.length; i++) {
             	    var ruleAttributes = response.features[i].attributes;
             	    ruleList.push(ruleAttributes.RULE);
             	  }
-            	  
+
             	  var txtList="";
             	  for (var i = 0; i < ruleList.length; i++) {
             	    txtList += ruleList[i] + "<br>";
-            	  }          	  
-            	  
-            	  document.getElementById("divBuisnessRule").innerHTML = txtList;         	  
-            	}               
+            	  }
+
+            	  document.getElementById("divBuisnessRule").innerHTML = txtList;
+            	}
               //-----End Business Rules-----//
-              
+
               //-----Table Operations-----//
             	function getInventoryData() {
             	  var fieldCheck = checkRouteFields();
-            	  
+
             	  if (fieldCheck) {
               	  startOver();
               	  addInventoryLayer();
@@ -844,126 +844,126 @@
             	  else {
             	    alert("Please select a GID and Attribute to continue.");
             	  }
-            	}          
-            	
+            	}
+
             	function controlTable() {
-                if (myTable) {  
+                if (myTable) {
                     myTable.destroy();
                     var div = document.createElement('div');
-                    div.id = "attTable";                    
+                    div.id = "attTable";
                     document.getElementById("table").appendChild(div);
                     document.getElementById("attTable").innerHTML = "<br><br><br>Load an attribute to see the table";
-                } 
+                }
                 else {
-                    document.getElementById("attTable").innerHTML = "<br><br><br>Load an attribute to see the table";                  
+                    document.getElementById("attTable").innerHTML = "<br><br><br>Load an attribute to see the table";
                 }
             	}
-            	
+
             	function assignActiveLayerOptions() {
             	  startOver();
-            	  
+
                 //Inventory Attribute
                 var tempAttName = document.getElementById("selRoadwayAttributes").value;
-                
+
                 for (var i = 0; i < assetList.length; i++) {
                   if (assetList[i][0]==tempAttName) {
                     activeLayerOptions = assetList[i];
                     break;
                   }
-                } 
-                
+                }
+
                 populateDomain(activeLayerOptions[0]);
                 populateBusinessRules(activeLayerOptions[0]);
-                  
+
                 if (activeInventoryLayer) {
-                  map.removeLayer(activeInventoryLayer);                    
+                  map.removeLayer(activeInventoryLayer);
                 }
 
                 activeInventoryLayer = new esri.layers.FeatureLayer(activeLayerOptions[2], {id:activeLayerOptions[0],supportsAdvancedQueries:true,visible:false,outFields:["*"]});
-                map.addLayer(activeInventoryLayer); 
+                map.addLayer(activeInventoryLayer);
                 map.graphics.add(activeGID);
             	}
-            	
+
               function addInventoryLayer() {
-                activeInventoryLayer.setDefinitionExpression("RDBD_GMTRY_LN_ID='" + document.getElementById("theGID").value + "'" );              
+                activeInventoryLayer.setDefinitionExpression("RDBD_GMTRY_LN_ID='" + document.getElementById("theGID").value + "'" );
                 activeInventoryLayer.refresh();
-                activeInventoryLayer.redraw(); 
+                activeInventoryLayer.redraw();
                 activeInventoryLayer.show();
-              }               	
-              
+              }
+
             	function buildTable() {
                 myTable = new FeatureTable({
                   featureLayer : activeInventoryLayer,
                   showGridMenu: true,
-                  outFields: ["OBJECTID","RDBD_GMTRY_LN_ID","BEGIN_DFO", "END_DFO", activeLayerOptions[1]],                  
+                  outFields: ["OBJECTID","RDBD_GMTRY_LN_ID","BEGIN_DFO", "END_DFO", activeLayerOptions[1]],
                   visible: true
                 }, "attTable");
 
                 myTable.startup();
                 myTable.sort("BEGIN_DFO", false);
-                adjustApp();                
-                
+                adjustApp();
+
                 myTable.on("row-select", function(evt){
                   getObjectIDForEditing(evt.rows[0].data);
-                }); 
-                
+                });
+
                 // onRowDblClick(e)
                 //Row double click doesn't appear to be a thing, need to check
                 // myTable.on("row-dblclick", function(evt){
                 //   getObjectIDForEditing(evt.rows[0].data);
-                // });                 
+                // });
             	}
-            	
-              function getObjectIDForEditing(theTableAttributes) {                
+
+              function getObjectIDForEditing(theTableAttributes) {
             	  clearGraphics();
-            	  
+
             	  var theObjectID = theTableAttributes.OBJECTID;
             	  var attributeToEdit;
-            	  
+
             	  var x;
                 for (x in theTableAttributes) {
                     if (x==activeLayerOptions[1]) {
                       attributeToEdit = theTableAttributes[x];
                     }
-                }            	 
-                
+                }
+
                 if (joinIsClicked) {
                   if (objectIDArray.includes(theObjectID)) {
                     //nothing, it's already there
                   }
                   else {
-                    objectIDArray.push(theObjectID);                    
+                    objectIDArray.push(theObjectID);
                   }
                 }
                 else {
                   objectIDArray.length = 0;
                   objectIDArray.push(theObjectID);
                 }
-                
+
               // 	document.getElementById("txtEditObjectID").value = objectIDArray.toString();
                 document.getElementById("txtEditAttribute").value = attributeToEdit;
 
-          	    zoomRow(); 
-            	} 
-              //-----End Table Operations-----//  
-              
+          	    zoomRow();
+            	}
+              //-----End Table Operations-----//
+
               //-----Add, Delete, Update, Split, Join Operations-----//
               function updateRecord() {
                 if (addNewIsClicked) {
                   addRecord();
                   return;
                 }
-                
+
                 if (splitIsClicked) {
                   splitRecord();
                   return;
                 }
-                
+
                 if (joinIsClicked) {
                   joinRecord();
                   return;
                 }
-                
+
                 if (editIsClicked) {
                   var editedGraphic = editToolbar.getCurrentState();
                   userDrawnGeometry = new esri.geometry.Polyline(new esri.SpatialReference({wkid:102100}));
@@ -971,7 +971,7 @@
                   addRecord();
                   return;
                 }
-                
+
                 var fieldCheck = checkEditingFields();
                 if (fieldCheck) {
                   var xmlhttp = new XMLHttpRequest();
@@ -982,24 +982,24 @@
                       getInventoryData();
                       clearEditingFields();
                 	  }
-                	};  	  
-                	
+                	};
+
                 	var serviceURL = activeInventoryLayer.url + "/updateFeatures?f=json&features=";
                 	var theData = createJSONAttribute();
-                	
+
                   xmlhttp.open("POST",serviceURL+theData,true);
-                  xmlhttp.send();               	
+                  xmlhttp.send();
                 }
                 else {
                   alert("Value is outside the domain.  Please reference the domain for this attribute and try again.");
                 }
               }
-          	
+
             	function deleteRecord() {
                 var fieldCheck = checkEditingFields();
                 if (fieldCheck) {
                   var r = confirm("Delete the selected record?");
-              	  if (r == true) { 
+              	  if (r == true) {
                     var xmlhttp = new XMLHttpRequest();
                   	xmlhttp.onreadystatechange=function() {
                   	  if (xmlhttp.readyState==4 && xmlhttp.status==200)	{
@@ -1010,15 +1010,15 @@
                         turnOffDrawFeature();
                         turnOffSplitFeature();
                         turnOffJoinFeature();
-                        clearGraphics();                        
+                        clearGraphics();
                   	  }
-                  	};  	  
-                  	
+                  	};
+
                   	var theRecordID = objectIDArray.toString();
                   	var serviceURL = activeInventoryLayer.url;
                     serviceURL += "/deleteFeatures?f=json&objectids=" + theRecordID;
                     xmlhttp.open("POST",serviceURL,true);
-                    xmlhttp.send();                      
+                    xmlhttp.send();
             	    }
                   else {
             	      //Nothing
@@ -1026,12 +1026,12 @@
                 }
                 else {
                   alert("Please choose a record to delete from the table.");
-                } 
+                }
               }
-              
+
               //No confirmation message or field validations
             	function quietDeleteRecord() {
-                var xmlhttp = new XMLHttpRequest();            	  
+                var xmlhttp = new XMLHttpRequest();
               	xmlhttp.onreadystatechange=function() {
               	  if (xmlhttp.readyState==4 && xmlhttp.status==200)	{
                     //Post edit activities
@@ -1041,27 +1041,27 @@
                     turnOffDrawFeature();
                     turnOffSplitFeature();
                     turnOffJoinFeature();
-                    clearGraphics();                        
+                    clearGraphics();
               	  }
-              	};  	  
-              	
+              	};
+
               	console.log("ObjectID to Delete:");
               	console.log(objectIDArray);
               	var theRecordID = objectIDArray.toString();
               	var serviceURL = activeInventoryLayer.url;
                 serviceURL += "/deleteFeatures?f=json&objectids=" + theRecordID;
                 xmlhttp.open("POST",serviceURL,true);
-                xmlhttp.send();                      
-              }              
-            
+                xmlhttp.send();
+              }
+
               function addRecord() {
                 var inventoryAttributeCheck = checkInventoryAttribute();
-        	      if (inventoryAttributeCheck) {                
+        	      if (inventoryAttributeCheck) {
               	  if (userDrawnGeometry) {
-                    userDrawnGeometry = createCustomAddSegment(userDrawnGeometry); 
+                    userDrawnGeometry = createCustomAddSegment(userDrawnGeometry);
                     var segmentOneDFO = updateDFO(userDrawnGeometry);
             	      addSplitRecords(createPolyline(userDrawnGeometry),segmentOneDFO[0],segmentOneDFO[1]);
-            	      
+
             	      if (editIsClicked) {
             	        quietDeleteRecord();
             	      }
@@ -1071,21 +1071,21 @@
               	  }
         	      }
         	      else {
-                  alert("Value is outside the domain.  Please reference the domain for this attribute and try again.");        	        
+                  alert("Value is outside the domain.  Please reference the domain for this attribute and try again.");
         	      }
-          	  }   
-        	  
+          	  }
+
           	  function copyRoadbedGeom() {
           	    var inventoryAttributeCheck = checkInventoryAttribute();
           	    if (inventoryAttributeCheck) {
               	  var r = confirm("This will apply the attribute to the entire length of the GID.");
                 	if (r == true) {
                     var serviceURL = activeInventoryLayer.url;
-                    serviceURL += "/addFeatures";                	  
-                	  
+                    serviceURL += "/addFeatures";
+
                   	var geomString = JSON.stringify(createPolyline(activeGID.geometry));
                   	var theData = createJSONObj(geomString,activeGID.attributes.BEGIN_DFO,activeGID.attributes.END_DFO);
-                    
+
                   	var xmlhttp = new XMLHttpRequest();
                   	xmlhttp.onreadystatechange=function() {
                   	  if (xmlhttp.readyState==4 && xmlhttp.status==200)	{
@@ -1093,8 +1093,8 @@
                         console.log(xmlhttp.response);
                         clearAfterAddNew();
                   	  }
-                  	};     
-                  	
+                  	};
+
                   	//Different requests based on the length of the data
                   	var lengthOfRequest = serviceURL.length+theData.length;
                   	if (lengthOfRequest>2048) {
@@ -1107,36 +1107,36 @@
                       });
                       layersRequest.then(
                           function(response) {
-                            clearAfterAddNew();                            
+                            clearAfterAddNew();
                         }, function(error) {
                             console.log("Error: ", error.message);
-                      });                  	  
+                      });
                   	}
                   	else {
                       xmlhttp.open("POST",serviceURL+"?f=json&features="+theData,true);
-                      xmlhttp.send();                   	  
+                      xmlhttp.send();
                   	}
-                  } 
+                  }
           	    }
           	    else {
           	      alert("Value is outside the domain.  Please reference the domain for this attribute and try again.");
           	    }
-          	  }    
-          	  
+          	  }
+
           	  function splitRecord() {
           	    var inventoryAttributeCheck = checkInventoryAttribute();
           	    if (inventoryAttributeCheck) {
-                  
+
             	    var newRecords = geometryEngine.cut(selectedRecord.geometry,userDrawnGeometry);
 
-                  //-----CALL UPDATEDFO()-----//  
+                  //-----CALL UPDATEDFO()-----//
                   var segmentOneDFO = updateDFO(newRecords[0]);
             	    addSplitRecords(createPolyline(newRecords[0]),segmentOneDFO[0],segmentOneDFO[1]);
-            	    
-            	    //-----CALL UPDATEDFO()-----// 
+
+            	    //-----CALL UPDATEDFO()-----//
                   var segmentTwoDFO = updateDFO(newRecords[1]);
             	    addSplitRecords(createPolyline(newRecords[1]),segmentTwoDFO[0],segmentTwoDFO[1]);
-            	    
+
             	    //Delete the Original Segment
             	    quietDeleteRecord();
           	    }
@@ -1144,25 +1144,25 @@
           	      alert("Record not selected from the table or entered value is outside the attribute domain.");
           	    }
           	  }
-          	  
+
           	  function addSplitRecords(splitGeom,minM,maxM) {
                 var xmlhttp = new XMLHttpRequest();
               	xmlhttp.onreadystatechange=function() {
               	  if (xmlhttp.readyState==4 && xmlhttp.status==200)	{
                     // console.log(xmlhttp.response);
                     if (addNewIsClicked||editIsClicked) {
-                      clearAfterAddNew(); 
+                      clearAfterAddNew();
                     }
               	  }
-              	};     
-              	
+              	};
+
               	//Service URL
               	var serviceURL = activeInventoryLayer.url;
               	serviceURL += "/addFeatures";
-              	
+
               	var geomString = JSON.stringify(splitGeom);
               	var theData = createJSONObj(geomString,minM,maxM);
-              	
+
               	//Different requests based on the length of the data
               	var lengthOfRequest = serviceURL.length+theData.length;
               	if (lengthOfRequest>2048) {
@@ -1176,19 +1176,19 @@
                   layersRequest.then(
                       function(response) {
                         if (addNewIsClicked) {
-                          clearAfterAddNew(); 
-                        }                        
+                          clearAfterAddNew();
+                        }
                         // console.log("Success: ", response);
                     }, function(error) {
                         console.log("Error: ", error.message);
-                  });                  	  
+                  });
               	}
               	else {
                   xmlhttp.open("POST",serviceURL+"?f=json&features="+theData,true);
-                  xmlhttp.send();                   	  
-              	}          	    
+                  xmlhttp.send();
+              	}
           	  }
-          	  
+
           	  function joinRecord() {
           	    if (objectIDArray.length<2) {
           	      alert("Select more than 1 record to use the join tool.");
@@ -1198,80 +1198,80 @@
             	    var minM=10000;
             	    var maxM=0;
             	    for (var i=0; i < activeInventoryLayer.graphics.length; i++) {
-                    if (objectIDArray.includes(activeInventoryLayer.graphics[i].attributes.OBJECTID)) {  
+                    if (objectIDArray.includes(activeInventoryLayer.graphics[i].attributes.OBJECTID)) {
                       joinGeomArray.push(activeInventoryLayer.graphics[i].geometry);
                       if (activeInventoryLayer.graphics[i].attributes.BEGIN_DFO < minM) {
                         minM = activeInventoryLayer.graphics[i].attributes.BEGIN_DFO;
                       }
                       if (activeInventoryLayer.graphics[i].attributes.END_DFO > maxM) {
                         maxM = activeInventoryLayer.graphics[i].attributes.END_DFO;
-                      }                    
+                      }
             	      }
-            	    }          	    
-            	    
+            	    }
+
             	    var joinedRecord = geometryEngine.union(joinGeomArray);
             	    addSplitRecords(createPolyline(joinedRecord),minM,maxM);
-            	    quietDeleteRecord();          	      
+            	    quietDeleteRecord();
           	    }
-          	  }        
-          	  
+          	  }
+
           	  function createJSONAttribute() {
           	      var theRecordID = objectIDArray[0];
-                	var theAttributeValue = document.getElementById("txtEditAttribute").value; 
+                	var theAttributeValue = document.getElementById("txtEditAttribute").value;
                 	var theJSONData = "";
                   theJSONData += "{'attributes': {'OBJECTID':'" + theRecordID + "','"+ activeLayerOptions[1] +"': '" + theAttributeValue + "'}}";
-                	
+
                 	console.log(theJSONData);
                 	return theJSONData;
           	  }
-          	  
+
           	  function createJSONObj(theGeom,minM,maxM) {
             		var theAttributeValue = document.getElementById("txtEditAttribute").value;
                 var theJSONData = "";
-                theJSONData += "{'geometry':" + theGeom + ",'attributes':{'RDBD_GMTRY_LN_ID':'" + activeGID.attributes.GID + "','BEGIN_DFO':'" + minM + "','END_DFO':'" + maxM + "','"+ activeLayerOptions[1] +"':'" + theAttributeValue + "'}}";  
+                theJSONData += "{'geometry':" + theGeom + ",'attributes':{'RDBD_GMTRY_LN_ID':'" + activeGID.attributes.GID + "','BEGIN_DFO':'" + minM + "','END_DFO':'" + maxM + "','"+ activeLayerOptions[1] +"':'" + theAttributeValue + "'}}";
 
                 console.log(theJSONData);
           	    return theJSONData;
           	  }
-          	  
+
           	  function createCustomAddSegment(comparisonGeom) {
           	    console.log("User drawn linework.");
           	    console.log(comparisonGeom);
-          	    
+
                 console.log("Number of points in the user drawn geometry.");
           	    console.log(comparisonGeom.paths[0].length);
-          	    
+
                 if (comparisonGeom.paths[0].length<2) {
                   alert("Unable to create line, please try again");
                   return;
-                }          	    
-          	    
+                }
+
           	    //The user drawing begin point
           	    var firstComparisonPoint = new esri.geometry.Point(comparisonGeom.paths[0][0], new SpatialReference({wkid: 3857 }));
           	    console.log("First comparison point.");
           	    console.log(firstComparisonPoint);
-          	    
+
           	    //First computed intersection point
           	    var firstIntersectingPoint = findNearestCoordinate(firstComparisonPoint);
           	    console.log("First intersecting point.");
           	    console.log(firstIntersectingPoint);
-          	    
+
                 //The user drawing end point
                 var pathArrayLength = comparisonGeom.paths[0].length-1;
                 var lastComparisonPoint = new esri.geometry.Point(comparisonGeom.paths[0][pathArrayLength], new SpatialReference({wkid: 3857 }));
           	    console.log("Last comparison point.");
-          	    console.log(lastComparisonPoint);                
-          	    
+          	    console.log(lastComparisonPoint);
+
           	    //Last computed intersection point
           	    var lastIntersectingPoint = findNearestCoordinate(lastComparisonPoint);
           	    console.log("Last Intersecting point.");
           	    console.log(lastIntersectingPoint);
-          	   
-                //Create small polyline         	   
+
+                //Create small polyline
           	    var theCutLine = createPerpendicularLine(firstIntersectingPoint,lastIntersectingPoint);
           	    console.log("Resulting cutline.");
           	    console.log(theCutLine);
-          	    
+
           	    //Cut the line
                 var splitOne = geometryEngine.cut(activeGID.geometry, theCutLine);
                 console.log("Resulting split geometry.");
@@ -1282,83 +1282,83 @@
                   alert("Unable to create line, please try again");
                   return;
                 }
-                
+
                 var updatedPolyline = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                 updatedPolyline.type = "polyline";
                 updatedPolyline.addPath(splitOne[0].paths[0]);
-                updatedPolyline.addPath(splitOne[1].paths[0]);   
-                
+                updatedPolyline.addPath(splitOne[1].paths[0]);
+
                 //Create second small polyline
-          	    var theCutLine2 = createPerpendicularLine(lastIntersectingPoint,firstIntersectingPoint); 
-                
-                //Cut the line again               
+          	    var theCutLine2 = createPerpendicularLine(lastIntersectingPoint,firstIntersectingPoint);
+
+                //Cut the line again
                 var splitTwo = geometryEngine.cut(updatedPolyline, theCutLine2);
-                
+
                 if (splitTwo.length==2) {
                   //Create three lines, only one is the one we want
                   var candidatePolylineOne = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                   candidatePolylineOne.type = "polyline";
                   candidatePolylineOne.addPath(splitTwo[0].paths[0]);
-                  
+
                   var candidatePolylineTwo = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                   candidatePolylineTwo.type = "polyline";
-                  candidatePolylineTwo.addPath(splitTwo[1].paths[0]);  
-                  
+                  candidatePolylineTwo.addPath(splitTwo[1].paths[0]);
+
                   //Perform intersects to pick which segment we want to keep
                   var firstPointIntersectCheck1 = geometryEngine.intersects(firstIntersectingPoint, candidatePolylineOne);
-                  var firstPointIntersectCheck2 = geometryEngine.intersects(firstIntersectingPoint, candidatePolylineTwo);                
-                  
+                  var firstPointIntersectCheck2 = geometryEngine.intersects(firstIntersectingPoint, candidatePolylineTwo);
+
                   var lastPointIntersectCheck1 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineOne);
-                  var lastPointIntersectCheck2 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineTwo);                
-   
+                  var lastPointIntersectCheck2 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineTwo);
+
                   if (firstPointIntersectCheck1&&lastPointIntersectCheck1) {
                     return candidatePolylineOne;
                   }
-                  
+
                   if (firstPointIntersectCheck2&&lastPointIntersectCheck2) {
-                    return candidatePolylineTwo;                  
+                    return candidatePolylineTwo;
                   }
                 }
-                
+
                 if (splitTwo.length==3) {
                   //Create three lines, only one is the one we want
                   var candidatePolylineOne = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                   candidatePolylineOne.type = "polyline";
                   candidatePolylineOne.addPath(splitTwo[0].paths[0]);
-                  
+
                   var candidatePolylineTwo = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                   candidatePolylineTwo.type = "polyline";
-                  candidatePolylineTwo.addPath(splitTwo[1].paths[0]);  
-                  
+                  candidatePolylineTwo.addPath(splitTwo[1].paths[0]);
+
                   var candidatePolylineThree = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                   candidatePolylineThree.type = "polyline";
-                  candidatePolylineThree.addPath(splitTwo[2].paths[0]);  
-                  
+                  candidatePolylineThree.addPath(splitTwo[2].paths[0]);
+
                   //Perform intersects to pick which segment we want to keep
                   var firstPointIntersectCheck1 = geometryEngine.intersects(firstIntersectingPoint, candidatePolylineOne);
-                  var firstPointIntersectCheck2 = geometryEngine.intersects(firstIntersectingPoint, candidatePolylineTwo);                
+                  var firstPointIntersectCheck2 = geometryEngine.intersects(firstIntersectingPoint, candidatePolylineTwo);
                   var firstPointIntersectCheck3 = geometryEngine.intersects(firstIntersectingPoint, candidatePolylineThree);
-                  
+
                   var lastPointIntersectCheck1 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineOne);
-                  var lastPointIntersectCheck2 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineTwo);                
-                  var lastPointIntersectCheck3 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineThree);                
-   
+                  var lastPointIntersectCheck2 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineTwo);
+                  var lastPointIntersectCheck3 = geometryEngine.intersects(lastIntersectingPoint, candidatePolylineThree);
+
                   if (firstPointIntersectCheck1&&lastPointIntersectCheck1) {
                     return candidatePolylineOne;
                   }
-                  
+
                   if (firstPointIntersectCheck2&&lastPointIntersectCheck2) {
-                    return candidatePolylineTwo;                  
+                    return candidatePolylineTwo;
                   }
-                  
+
                   if (firstPointIntersectCheck3&&lastPointIntersectCheck3) {
-                    return candidatePolylineThree;                  
-                  }                   
+                    return candidatePolylineThree;
+                  }
                 }
           	  }
-        	    //-----End Add, Delete, Update, Split, Join Operations-----//  
-        	    
-          	  //-----DFO Operations-----//        	    
+        	    //-----End Add, Delete, Update, Split, Join Operations-----//
+
+          	  //-----DFO Operations-----//
               function getRoadbedMeasures(theRoadbedName) {
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.responseType = 'json';
@@ -1368,82 +1368,82 @@
                     gidWithMeasuresGeom=xmlhttp.response;
                     // console.log(gidWithMeasures);
               	  }
-              	};  	  
-              	
+              	};
+
               	//Whole Route (change to GID when GID is included in Asset Tables) - All geometry and M values
                 var serviceString = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Demo_TxDOT_Roadways/FeatureServer/0";
-                var paraString = "/query?f=json&where=RTE_RB_NM='" + theRoadbedName + "'&returnGeometry=true&returnM=true";            
+                var paraString = "/query?f=json&where=RTE_RB_NM='" + theRoadbedName + "'&returnGeometry=true&returnM=true";
                 var queryString = serviceString+paraString;
-                  
+
                 xmlhttp.open("POST",queryString,true);
-                xmlhttp.send();           	    
+                xmlhttp.send();
           	  }
-          	  
+
           	  function updateDFO(comparisonGeom) {
           	    var DFOs = [];
-          	    
+
           	    var comparisonLong="";
           	    var comparisonLat="";
-          	    
+
           	    var baseLong = "";
           	    var baseLat = "";
           	    var baseM = "";
-          	    
+
                 for (var i=0; i < comparisonGeom.paths[0].length; i++) {
                   comparisonLong = comparisonGeom.paths[0][i][0];
                   comparisonLat = comparisonGeom.paths[0][i][1];
-                  
-                  for (var h=0; h < gidWithMeasuresGeom.features.length; h++) {                              
+
+                  for (var h=0; h < gidWithMeasuresGeom.features.length; h++) {
                     for (var j=0; j < gidWithMeasuresGeom.features[h].geometry.paths[0].length; j++) {
                       baseLong = gidWithMeasuresGeom.features[h].geometry.paths[0][j][0];
-                      baseLat = gidWithMeasuresGeom.features[h].geometry.paths[0][j][1]; 
+                      baseLat = gidWithMeasuresGeom.features[h].geometry.paths[0][j][1];
                       baseM = gidWithMeasuresGeom.features[h].geometry.paths[0][j][2];
-                      
+
                       if (comparisonLong==baseLong&&comparisonLat==baseLat) {
                         comparisonGeom.paths[0][i].push(baseM);
                       }
                     }
                   }
-                }          	    
-          	    
+                }
+
           	   for (var i=0; i < comparisonGeom.paths[0].length; i++) {
           	     if (comparisonGeom.paths[0][i].length<3) {
           	       if (i==0) {
-                     var pt1 = new esri.geometry.Point(comparisonGeom.paths[0][0][0], comparisonGeom.paths[0][0][1], new SpatialReference({wkid: 3857 }));          	   
-                     var pt2 = new esri.geometry.Point(comparisonGeom.paths[0][1][0], comparisonGeom.paths[0][1][1], new SpatialReference({wkid: 3857 })); 
+                     var pt1 = new esri.geometry.Point(comparisonGeom.paths[0][0][0], comparisonGeom.paths[0][0][1], new SpatialReference({wkid: 3857 }));
+                     var pt2 = new esri.geometry.Point(comparisonGeom.paths[0][1][0], comparisonGeom.paths[0][1][1], new SpatialReference({wkid: 3857 }));
                	     var geoMeterLength = geometryEngine.geodesicLength(createTwoPointPolyline(pt1,pt2), 9001);
                 	   var geoMileValue = ((geoMeterLength/1609.344)*1000)/1000;
                 	   comparisonGeom.paths[0][0].push(comparisonGeom.paths[0][1][2]-geoMileValue);
           	       }
           	       else {
-                     var pt3 = new esri.geometry.Point(comparisonGeom.paths[0][i-1][0], comparisonGeom.paths[0][i-1][1], new SpatialReference({wkid: 3857 }));          	   
-                     var pt4 = new esri.geometry.Point(comparisonGeom.paths[0][i][0], comparisonGeom.paths[0][i][1], new SpatialReference({wkid: 3857 }));                
+                     var pt3 = new esri.geometry.Point(comparisonGeom.paths[0][i-1][0], comparisonGeom.paths[0][i-1][1], new SpatialReference({wkid: 3857 }));
+                     var pt4 = new esri.geometry.Point(comparisonGeom.paths[0][i][0], comparisonGeom.paths[0][i][1], new SpatialReference({wkid: 3857 }));
                 	   var geoMeterLength = geometryEngine.geodesicLength(createTwoPointPolyline(pt3,pt4), 9001);
                 	   var geoMileValue = ((geoMeterLength/1609.344)*1000)/1000;
                 	   comparisonGeom.paths[0][i].push(comparisonGeom.paths[0][i-1][2]+geoMileValue);
           	       }
           	     }
           	   }
-                
+
           	   var pathArrayLength = comparisonGeom.paths[0].length-1;
           	   DFOs.push(Math.round(comparisonGeom.paths[0][0][2]*1000)/1000);
-          	   DFOs.push(Math.round(comparisonGeom.paths[0][pathArrayLength][2]*1000)/1000); 
+          	   DFOs.push(Math.round(comparisonGeom.paths[0][pathArrayLength][2]*1000)/1000);
           	   DFOs.push(comparisonGeom);
-          	   
+
           	   console.log("DFOs")
           	   console.log(DFOs);
           	   return DFOs;
-          	  }        	    
-        	    
+          	  }
+
         	    function identRouteForM(event) {
                 queryTask = new esri.tasks.QueryTask("https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Demo_TxDOT_Roadways/FeatureServer/0");
                 query = new esri.tasks.Query();
                 query.returnGeometry = true;
                 query.outFields = ["*"];
                 query.geometry = event.mapPoint;
-                
+
                 mapPoint = event.mapPoint;
-  
+
                 var point = event.mapPoint;
                 var pxWidth = map.extent.getWidth() / map.width;
                 var padding = 20 * pxWidth;
@@ -1453,23 +1453,23 @@
                   "xmax": point.x + padding,
                   "ymax": point.y + padding,
                   "spatialReference": point.spatialReference
-                });    
-                
+                });
+
                 query.geometry = newGeom;
                 queryTask.execute(query, getSegmentWithM);
         	    }
-          
+
               function getSegmentWithM(results) {
                 if (measureClicked) {
                   if (results.features.length==0) {
                     alert("Please click closer to a line.");
                     return;
-                  }      
-                  
+                  }
+
                   clearGraphics();
                   var graphic = results.features[0];
-                  activeGID=graphic;                
-                  
+                  activeGID=graphic;
+
                   var xmlhttp = new XMLHttpRequest();
                   xmlhttp.responseType = 'json';
                 	xmlhttp.onreadystatechange=function() {
@@ -1478,133 +1478,133 @@
                       gidWithMeasuresGeom=xmlhttp.response;
                       splitRecordForPointM();
                 	  }
-                	};  	  
-                	
+                	};
+
                   var serviceString = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Demo_TxDOT_Roadways/FeatureServer/0";
-                  var paraString = "/query?f=json&where=GID=" + results.features[0].attributes.GID + "&returnGeometry=true&returnM=true";            
+                  var paraString = "/query?f=json&where=GID=" + results.features[0].attributes.GID + "&returnGeometry=true&returnM=true";
                   var queryString = serviceString+paraString;
                   // console.log("test");
-                    
+
                   xmlhttp.open("POST",queryString,true);
-                  xmlhttp.send(); 
+                  xmlhttp.send();
                 }
               }
-              
-          	  function splitRecordForPointM() {
-          	    var firstIntersectingPoint = findNearestCoordinate(mapPoint); 
 
-                //Create small polyline         	   
-          	    var theCutLine = createPerpendicularLineFromSinglePoint(firstIntersectingPoint);          	    
-                
-                //Splitting at the first intersection point  
-                var newRecords = geometryEngine.cut(activeGID.geometry, theCutLine); 
-                
+          	  function splitRecordForPointM() {
+          	    var firstIntersectingPoint = findNearestCoordinate(mapPoint);
+
+                //Create small polyline
+          	    var theCutLine = createPerpendicularLineFromSinglePoint(firstIntersectingPoint);
+
+                //Splitting at the first intersection point
+                var newRecords = geometryEngine.cut(activeGID.geometry, theCutLine);
+
                 if (newRecords) {
                   //Getting the DFO
                   var segmentOneDFO = updateDFO(newRecords[0]);
                   var geomSegment = segmentOneDFO[2];
                   var baseM;
-                  
+
                   //Finding the Coordinate from the split (it also has the updated DFO)
                   for (var i=0; i < geomSegment.paths[0].length; i++) {
                     if (geomSegment.paths[0][i][0]==firstIntersectingPoint.x&&geomSegment.paths[0][i][1]==firstIntersectingPoint.y) {
                       baseM=Math.round(geomSegment.paths[0][i][2]*1000)/1000;
                     }
-                  } 
-                  
+                  }
+
                   //Point style
                   var symbol = new esri.symbol.SimpleMarkerSymbol();
           				symbol.style = esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE;
           				symbol.setSize(6);
-          				symbol.setColor(new esri.Color("#000000"));      
-          				map.graphics.add(new esri.Graphic(firstIntersectingPoint, symbol));  
-          				
+          				symbol.setColor(new esri.Color("#000000"));
+          				map.graphics.add(new esri.Graphic(firstIntersectingPoint, symbol));
+
           				//Label
           				var label_symbol =  new esri.symbol.TextSymbol(baseM);
           				label_symbol.setColor(new esri.Color("#000000"));
-          				label_symbol.setFont(new esri.symbol.Font("10pt").setWeight(esri.symbol.Font.WEIGHT_BOLD)); 
-          				
-                  var currentScale = map.getScale();          				
+          				label_symbol.setFont(new esri.symbol.Font("10pt").setWeight(esri.symbol.Font.WEIGHT_BOLD));
+
+                  var currentScale = map.getScale();
           				var labelOffset=Math.round(currentScale/350);
 
           				//Location for the label
-          				var labelLocation = new esri.geometry.Point([firstIntersectingPoint.x,firstIntersectingPoint.y+labelOffset], new SpatialReference({wkid: 3857 }));                
+          				var labelLocation = new esri.geometry.Point([firstIntersectingPoint.x,firstIntersectingPoint.y+labelOffset], new SpatialReference({wkid: 3857 }));
           				map.graphics.add(new esri.Graphic(labelLocation, label_symbol));
                 }
                 else {
                   alert("Could not locate measure.");
                 }
-          	  } 
+          	  }
           	  //-----End DFO Operations-----//
-          	  
+
           	  //-----Spatial Operations-----//
               function createPolyline(inputGeom) {
                   var newPolyline = new esri.geometry.Polyline(new esri.SpatialReference({wkid:102100}));
                   newPolyline.type = "polyline";
                   var tmpAttLine = [];
-  
+
                   for (var i=0; i < inputGeom.paths[0].length; i++) {
                     tmpAttLine.push([inputGeom.paths[0][i][0],inputGeom.paths[0][i][1]]);
                   }
-                  
-                  newPolyline.addPath(tmpAttLine); 
-                  
+
+                  newPolyline.addPath(tmpAttLine);
+
                   // console.log(newPolyline);
                   return newPolyline;
           	  }
-          	  
+
           	  function createTwoPointPolyline(point1,point2) {
                   var newPolyline = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                   newPolyline.type = "polyline";
                   var tmpAttLine = [];
                   tmpAttLine.push(point1);
                   tmpAttLine.push(point2);
-                  newPolyline.addPath(tmpAttLine); 
-                  
-                  // console.log(newPolyline);                  
-                  return newPolyline;        
+                  newPolyline.addPath(tmpAttLine);
+
+                  // console.log(newPolyline);
+                  return newPolyline;
           	  }
-          	  
+
           	  function createPerpendicularLine(centerPoint,comparisonPoint) {
                   var newPolyline = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                   newPolyline.type = "polyline";
                   var tmpAttLine = [];
-                  
+
                   var longDiff = Math.abs(Math.abs(centerPoint.x) - Math.abs(comparisonPoint.x));
                   var latDiff = Math.abs(centerPoint.y - comparisonPoint.y);
-                  
+
                   var point1;
                   var point2;
                   var point3;
-                  
+
                   if (longDiff > latDiff) {
-                    //East West Route, draw a North South Line 
-                    point1 = new esri.geometry.Point([(centerPoint.x),centerPoint.y-50], new SpatialReference({wkid: 3857 }));                    
-                    point2 = new esri.geometry.Point([centerPoint.x,centerPoint.y], new SpatialReference({wkid: 3857 })); 
+                    //East West Route, draw a North South Line
+                    point1 = new esri.geometry.Point([(centerPoint.x),centerPoint.y-50], new SpatialReference({wkid: 3857 }));
+                    point2 = new esri.geometry.Point([centerPoint.x,centerPoint.y], new SpatialReference({wkid: 3857 }));
                     point3 = new esri.geometry.Point([(centerPoint.x),centerPoint.y+50], new SpatialReference({wkid: 3857 }));
                   }
                   else {
                     //North South Route, draw an East West line
-                    point1 = new esri.geometry.Point([centerPoint.x-50,(centerPoint.y)], new SpatialReference({wkid: 3857 }));                    
-                    point2 = new esri.geometry.Point([centerPoint.x,centerPoint.y], new SpatialReference({wkid: 3857 })); 
-                    point3 = new esri.geometry.Point([centerPoint.x+50,(centerPoint.y)], new SpatialReference({wkid: 3857 })); 
+                    point1 = new esri.geometry.Point([centerPoint.x-50,(centerPoint.y)], new SpatialReference({wkid: 3857 }));
+                    point2 = new esri.geometry.Point([centerPoint.x,centerPoint.y], new SpatialReference({wkid: 3857 }));
+                    point3 = new esri.geometry.Point([centerPoint.x+50,(centerPoint.y)], new SpatialReference({wkid: 3857 }));
                   }
-                  
+
                   tmpAttLine.push(point1);
                   tmpAttLine.push(point2);
                   tmpAttLine.push(point3);
-                  newPolyline.addPath(tmpAttLine); 
-                  
+                  newPolyline.addPath(tmpAttLine);
+
                   // console.log(newPolyline);
-                  return newPolyline;           	    
+                  return newPolyline;
           	  }
-          	  
+
           	  function createPerpendicularLineFromSinglePoint(point) {
                 var shortestDistance = 20000;
                 var firstIntersectingPointTemp;
                 var nearestVertices;
                 var tempPoint;
-                
+
                 for (var h=0; h < gidWithMeasuresGeom.features.length; h++) {
                   firstIntersectingPointTemp = geometryEngine.nearestCoordinate(gidWithMeasuresGeom.features[h].geometry, point);
                   if (firstIntersectingPointTemp.distance < shortestDistance) {
@@ -1612,12 +1612,12 @@
                     tempPoint = new esri.geometry.Point([firstIntersectingPointTemp.coordinate.x,firstIntersectingPointTemp.coordinate.y], new SpatialReference({wkid: 3857 }));
                     nearestVertices = geometryEngine.nearestVertices(gidWithMeasuresGeom.features[h].geometry, tempPoint, 2000, 10);
                   }
-                } 
+                }
 
                 var point1;
                 var point2;
                 var point3;
-                
+
                 var lastItemInArray;
                 var longDiff;
                 var latDiff;
@@ -1625,90 +1625,90 @@
                 var newPolyline = new esri.geometry.Polyline(new esri.SpatialReference({wkid:3857}));
                 newPolyline.type = "polyline";
                 var tmpAttLine = [];
-              
+
                 if (nearestVertices.length>1) {
                   lastItemInArray = nearestVertices.length-1;
                   longDiff = Math.abs(Math.abs(nearestVertices[0].coordinate.x) - Math.abs(nearestVertices[lastItemInArray].coordinate.x));
-                  latDiff = Math.abs(nearestVertices[0].coordinate.y - nearestVertices[lastItemInArray].coordinate.y);                  
+                  latDiff = Math.abs(nearestVertices[0].coordinate.y - nearestVertices[lastItemInArray].coordinate.y);
                 }
                 else {
                   longDiff = 5;
                   latDiff = 4;
                 }
-                
+
                 if (longDiff > latDiff) {
-                  //East West Route, draw a North South Line 
-                  point1 = new esri.geometry.Point([point.x,point.y-50], new SpatialReference({wkid: 3857 }));                    
-                  point2 = new esri.geometry.Point([point.x,point.y], new SpatialReference({wkid: 3857 })); 
+                  //East West Route, draw a North South Line
+                  point1 = new esri.geometry.Point([point.x,point.y-50], new SpatialReference({wkid: 3857 }));
+                  point2 = new esri.geometry.Point([point.x,point.y], new SpatialReference({wkid: 3857 }));
                   point3 = new esri.geometry.Point([point.x,point.y+50], new SpatialReference({wkid: 3857 }));
                 }
                 else {
                   //North South Route, draw an East West line
-                  point1 = new esri.geometry.Point([point.x-50,point.y], new SpatialReference({wkid: 3857 }));                    
-                  point2 = new esri.geometry.Point([point.x,point.y], new SpatialReference({wkid: 3857 })); 
-                  point3 = new esri.geometry.Point([point.x+50,point.y], new SpatialReference({wkid: 3857 })); 
+                  point1 = new esri.geometry.Point([point.x-50,point.y], new SpatialReference({wkid: 3857 }));
+                  point2 = new esri.geometry.Point([point.x,point.y], new SpatialReference({wkid: 3857 }));
+                  point3 = new esri.geometry.Point([point.x+50,point.y], new SpatialReference({wkid: 3857 }));
                 }
-                
+
                 tmpAttLine.push(point1);
                 tmpAttLine.push(point2);
                 tmpAttLine.push(point3);
-                newPolyline.addPath(tmpAttLine); 
-                
+                newPolyline.addPath(tmpAttLine);
+
                 // console.log(newPolyline);
-                return newPolyline;                
-          	  }          	  
-          	  
+                return newPolyline;
+          	  }
+
           	  function findNearestCoordinate(point) {
                 var shortestDistance = 20000;
-                var firstIntersectingPoint;   
-                var firstIntersectingPointTemp;                 
-                
+                var firstIntersectingPoint;
+                var firstIntersectingPointTemp;
+
                 for (var h=0; h < gidWithMeasuresGeom.features.length; h++) {
                   firstIntersectingPointTemp = geometryEngine.nearestCoordinate(gidWithMeasuresGeom.features[h].geometry, point);
                   if (firstIntersectingPointTemp.distance < shortestDistance) {
                     shortestDistance = firstIntersectingPointTemp.distance;
                     firstIntersectingPoint = firstIntersectingPointTemp;
                   }
-                } 
-                
-                var returnPoint = new esri.geometry.Point([firstIntersectingPoint.coordinate.x,firstIntersectingPoint.coordinate.y], new SpatialReference({wkid: 3857 })); 
+                }
+
+                var returnPoint = new esri.geometry.Point([firstIntersectingPoint.coordinate.x,firstIntersectingPoint.coordinate.y], new SpatialReference({wkid: 3857 }));
                 // console.log(returnPoint);
                 return returnPoint;
           	  }
-          	  
+
           	  function findNearestVertex(point) {
                 var shortestDistance = 20000;
-                var firstIntersectingPoint;   
-                var firstIntersectingPointTemp;                 
-                
+                var firstIntersectingPoint;
+                var firstIntersectingPointTemp;
+
                 for (var h=0; h < gidWithMeasuresGeom.features.length; h++) {
                   firstIntersectingPointTemp = geometryEngine.nearestVertex(gidWithMeasuresGeom.features[h].geometry, point);
                   if (firstIntersectingPointTemp.distance < shortestDistance) {
                     shortestDistance = firstIntersectingPointTemp.distance;
                     firstIntersectingPoint = firstIntersectingPointTemp;
                   }
-                } 
-                
-                var returnPoint = new esri.geometry.Point([firstIntersectingPoint.coordinate.x,firstIntersectingPoint.coordinate.y], new SpatialReference({wkid: 3857 })); 
+                }
+
+                var returnPoint = new esri.geometry.Point([firstIntersectingPoint.coordinate.x,firstIntersectingPoint.coordinate.y], new SpatialReference({wkid: 3857 }));
                 // console.log(returnPoint);
-                return returnPoint;                
-          	  }  
+                return returnPoint;
+          	  }
           	  //-----End Spatial Operations-----//
-                
-          	//Function End	
+
+          	//Function End
             }
-        	//Require end            
-          );  
-          
+        	//Require end
+          );
+
           //-----Adjusts the header, index, and contents-----//
           function adjustAppOutsideRequire() {
             var w = window.innerWidth;
             var h = window.innerHeight;
-            
+
             var indexWidthPCT = .18;
             var mapHeightPCT = .70;
             var tableHeightPCT = .3;
-            
+
             //----Header Variables
             var headerStyleTop = 0;
             var headerStyleLeft = 0;
@@ -1720,56 +1720,56 @@
             document.getElementById("header").style.width = headerWidth + "px";
             document.getElementById("header").style.height = headerHeight + "px";
             //----End Header
-            
+
             //----Index Variables
             var indexStyleTop = headerHeight;
             var indexStyleLeft = 0;
             var indexWidth = Math.round(w*indexWidthPCT);
             var indexHeight = (h - headerHeight);
-            
+
             document.getElementById("index").style.top = indexStyleTop + "px";
             document.getElementById("index").style.left = indexStyleLeft  + "px";
             document.getElementById("index").style.width = indexWidth + "px";
             document.getElementById("index").style.height = indexHeight + "px";
             //----End Index
-            
+
             //----Map Variables
             var mapStyleTop = headerHeight;
             var mapStyleLeft = indexWidth;
             var mapWidth = Math.round(w-indexWidth);
             var mapHeight = ((h-headerHeight) * mapHeightPCT);
-            
+
             document.getElementById("map").style.top = mapStyleTop + "px";
             document.getElementById("map").style.left = mapStyleLeft  + "px";
             document.getElementById("map").style.width = mapWidth + "px";
             document.getElementById("map").style.height = mapHeight + "px";
-            //----End Map              
-            
+            //----End Map
+
             //----Table Variables
             var tableStyleTop = headerHeight + mapHeight;
             var tableStyleLeft = indexWidth;
             var tableWidth = Math.round(w-indexWidth);
             var tableHeight = ((h-headerHeight) * tableHeightPCT);
-            
+
             document.getElementById("table").style.top = tableStyleTop + "px";
             document.getElementById("table").style.left = tableStyleLeft  + "px";
             document.getElementById("table").style.width = tableWidth + "px";
             document.getElementById("table").style.height = tableHeight + "px";
-            //----End Table 
+            //----End Table
           }
-          //-----End header, index, and contents-----// 
-          
+          //-----End header, index, and contents-----//
+
       	  //-----Notes Section-----//
       	    //102100 old stuff for web mercator aux sphere
       	    //WGS 84 = 4326
       	    //Web Mercator 3857
-            //TSMS 3081       	  
-            //https://developers.arcgis.com/rest/services-reference/query-feature-service-.htm 
-            //https://developers.arcgis.com/rest/services-reference/query-feature-service-layer-.htm            
+            //TSMS 3081
+            //https://developers.arcgis.com/rest/services-reference/query-feature-service-.htm
+            //https://developers.arcgis.com/rest/services-reference/query-feature-service-layer-.htm
         	  //intersect(geometry, intersector) - potentially use to clip linear geometry using 2 points
         	  //Add business rules table to AGO, then work into the application
         	 //Nearest Coordinate, then Nearest Vertex to get nearest M value.  Then add use Distance function from nearest vertex to measure from nearest vertex
-      	  //-----End Notes Section-----//          
+      	  //-----End Notes Section-----//
         </script>
     </head>
     <body onresize="adjustAppOutsideRequire()">
@@ -1783,7 +1783,7 @@
           v0006_08_31_2018 - Added esriRequest for long URL Post operations<br>
           v0007_09_05_2018 - Added field editing (Split Record), replaced custom table ESRI FeatureTable, Converted project to AMD style<br>
           v0008_09_06_2018 - Added feature editing (Join Record)<br>
-          v0009_09_07_2018 - Added reuseable functions (polyline, JSON non-spatial update, JSON spatial update, split records, quite delete), added snapping, replaced custom draw with ESRI draw mode<br> 
+          v0009_09_07_2018 - Added reuseable functions (polyline, JSON non-spatial update, JSON spatial update, split records, quite delete), added snapping, replaced custom draw with ESRI draw mode<br>
           v0010_09_09_2018 - Added ability to update DFOs (new segments, splits, joins)<br>
           v0011_09_09_2018 - Simplified xmlhttp request calls, added passive selector for short or long POST requests<br>
           v0012_09_09_2018 - Extended add record to clip base geometry and update DFO's<br>
@@ -1809,7 +1809,7 @@
         </div>
         <div id="index">
           <table border=0>
-            <tr><th class="indexTitles" colspan=2>Route Reference</th></tr>             
+            <tr><th class="indexTitles" colspan=2>Route Reference</th></tr>
             <tr>
               <td>GID</td>
               <td><input id="theGID" type="text" name="theGID" value=""/>&nbsp;<button id="btnGetGID" class="smallButton" title="Click this button, then click map to get roadway reference.">R</button></td>
@@ -1817,17 +1817,17 @@
             <tr><td>Route</td><td><div class="smallReferenceText" id="divRouteName"></div></td></tr>
             <tr><td>DFOs</td><td><div class="smallReferenceText" id="divDFORange"></div></td></tr>
             <tr><td colspan=2><hr /></td></tr>
-            <tr><th class="indexTitles" colspan=2>Attribute Selection</th></tr>            
+            <tr><th class="indexTitles" colspan=2>Attribute Selection</th></tr>
             <tr><td>Attribute</td><td><select id="selRoadwayAttributes" size=5></select></td></tr>
             <tr><td>&nbsp;</td><td><button id="btnGetInventoryData" title="Load data for the selected attribute.">Load Attributes</button></td>
             </tr><tr><td>Domain</td><td><div id="attributeDomain">&nbsp;<select id="selDomainValues" size=4></select></div></td></tr>
             <tr><td>Rules</td><td><div class="smallReferenceText" id="divBuisnessRule"></div></td></tr>
-            <tr><td colspan=2><hr /></td></tr>            
-            <tr><th class="indexTitles" colspan=2>Editing Tools</th></tr>            
+            <tr><td colspan=2><hr /></td></tr>
+            <tr><th class="indexTitles" colspan=2>Editing Tools</th></tr>
             <tr>
               <td colspan=2 class="editToolButtons">
                 <button id="btnAddRecord" class="editSmallButton" title="Add New Record" disabled>A</button>
-                <button id="btnEditRecord" class="editSmallButton" title="Edit Record" disabled>E</button>                
+                <button id="btnEditRecord" class="editSmallButton" title="Edit Record" disabled>E</button>
                 <button id="btnCopyRoadbedGeom" class="editSmallButton" title="Add New Record that covers the entire selected roadbed" disabled>C</button>
                 <button id="btnDeleteRecord" class="editSmallButton" title="Delete Record" disabled>D</button>
                 <button id="btnJoinRecord" class="editSmallButton" title="Join Records" disabled>J</button>
@@ -1848,7 +1848,7 @@
           <div id="divReadout"><button id="btnMeasureReadout" class="mapButtons" title="Click on a route to view DFO values">M</button></div>
           <div id="divMapCoordinates"></div>
           <div id="divBaseMaps">Imagery</div>
-        </div> 
-        <div id="table"><div id="attTable"><br><br><br>Load an attribute to see the table.</div></div> 
+        </div>
+        <div id="table"><div id="attTable"><br><br><br>Load an attribute to see the table.</div></div>
     </body>
 </html>
